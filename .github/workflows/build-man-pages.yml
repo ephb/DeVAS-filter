@@ -1,0 +1,26 @@
+name: Build PDF Man Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install mandoc
+      run: sudo apt-get update && sudo apt-get install -y mandoc
+
+    - name: Build PDF man pages
+      run: sh doc/man/make-pdf-man-pages
+
+    - name: Upload PDF man pages
+      uses: actions/upload-artifact@v3
+      with:
+        name: pdf-man-pages
+        path: doc/man/*.pdf
